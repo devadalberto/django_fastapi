@@ -8,7 +8,7 @@ from django.urls import include, path
 from rest_framework_simplejwt.views import (TokenObtainPairView,
                                             TokenRefreshView, TokenVerifyView)
 
-from django_fastapi.settings.base import DRF_V1_STR
+from django_fastapi.settings.dev import DRF_V1_STR
 
 urlpatterns = [
     # Simple JWT
@@ -17,7 +17,7 @@ urlpatterns = [
     path("token/verify/", TokenVerifyView.as_view()),
 
     # rest_framework
-    path("", include('rest_framework.urls')),
+    # path("", include('rest_framework.urls')),
 
     # The pasword reset path below can only work
     # if added to the high level urls.py file
