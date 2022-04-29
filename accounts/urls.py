@@ -1,7 +1,7 @@
 from django_fastapi.settings import DRF_V1_STR
 from dj_rest_auth.registration.views import ConfirmEmailView, VerifyEmailView
 from django.urls import path
-from django.urls.conf import include, path
+from django.urls import include, path
 
 from .views import (CustomEmailConfirmationView, CustomLoginView,
                     CustomPasswordResetView, CustomPasswordSetView,

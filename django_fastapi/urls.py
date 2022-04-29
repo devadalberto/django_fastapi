@@ -17,7 +17,7 @@ urlpatterns = [
     path("token/verify/", TokenVerifyView.as_view()),
 
     # rest_framework
-    # path("", include('rest_framework.urls')),
+    path("", include('rest_framework.urls')),
 
     # The pasword reset path below can only work
     # if added to the high level urls.py file
@@ -25,7 +25,7 @@ urlpatterns = [
         "accounts/password/reset/<slug:uidb64>/<slug:token>/",
         CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'
     ),
-    path('', home_view, name='home-view'),
+    path('home/', home_view, name='home_view'),
     path('admin/', admin.site.urls)
 ]
 
