@@ -147,12 +147,18 @@ USE_TZ = True
 
 # STATIC_URL = 'static/'
 ################## FILES: STATIC & MEDIA CONFIG ###########################
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     # os.path.join(BASE_DIR, 'other_static_folder'),
 ]
-
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+else:
+    #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -160,6 +166,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 ########################### MORE SETTINGS ##################################
+PROJECT_NAME = "Django and FastAPI are friends"
+
 SITE_ID = 1
 # AUTH_USER_MODEL = 'accounts.User' # (your_app.your_class)
 AUTH_USER_MODEL = 'accounts.CustomUser'
