@@ -10,7 +10,7 @@ from fastapi.middleware.wsgi import WSGIMiddleware
 from fastapi.staticfiles import StaticFiles
 
 # Export Django settings env variable
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_fastapi.settings.base")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_fastapi.settings.dev")
 apps.populate(settings.INSTALLED_APPS)
 
 # This endpoint imports should be placed below the settings env declaration
