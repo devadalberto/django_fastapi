@@ -3,8 +3,8 @@ from django.contrib.auth.models import AbstractUser
 
 from accounts.managers import UserManager
 
-class User(AbstractUser):
-    pass
+# class User(AbstractUser):
+#     pass
 	#is_dtag = models.BooleanField(default=True)
 
 class CustomUser(AbstractUser):

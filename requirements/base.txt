@@ -1,25 +1,42 @@
-# Django
-# ------------------------------------------------------------------------------
-django
-django-extensions
-django-crispy-forms
-django-cors-headers
-django-environ
-django-model-utils
-#django-redis
-#django-allauth
-
-# utils
-# ------------------------------------------------------------------------------
-crispy_bootstrap5
-Pillow
-pytz
-python-slugify
+anyio
 argon2-cffi
+asgiref
+certifi
+cffi
+charset-normalizer
+click
+crispy_bootstrap5
+cryptography
+defusedxml
+dj-rest-auth
+Django
+django-allauth
+django-cors-headers
+django-crispy-forms
+django-environ
+django-extensions
+django-model-utils
+djangorestframework
+djangorestframework-simplejwt
+dnspython
+email-validator
+fastapi
+h11
+idna
+oauthlib
+Pillow
+pycparser
+pydantic
+PyJWT
+python-slugify
+python3-openid
+pytz
+requests
+requests-oauthlib
+sniffio
+sqlparse
+starlette
+typing-extensions
+urllib3
+uvicorn
 whitenoise
-#redis
-
-# Django REST Framework
-# ------------------------------------------------------------------------------
-#djangorestframework
-#django-cors-headers

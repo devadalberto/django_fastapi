@@ -1,4 +1,4 @@
-from core.utils import get_first_name, get_last_name
+from django_fastapi.utils import get_first_name, get_last_name
 from django.contrib.auth.models import BaseUserManager
 from django.core.exceptions import ValidationError
 from django.db import models

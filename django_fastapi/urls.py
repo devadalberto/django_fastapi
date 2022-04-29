@@ -4,11 +4,11 @@ from django.views import defaults as default_views
 from django.conf.urls.static import static
 from .views import home_view
 from accounts.views import CustomPasswordResetConfirmView
-from django.urls.conf import include, path
+from django.urls import include, path
 from rest_framework_simplejwt.views import (TokenObtainPairView,
                                             TokenRefreshView, TokenVerifyView)
 
-from core.settings import DRF_V1_STR
+from django_fastapi.settings.base import DRF_V1_STR
 
 urlpatterns = [
     # Simple JWT
