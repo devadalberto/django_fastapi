@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 import environ
 
@@ -26,21 +27,18 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+API_V1_STR: str = "/api/fa/v1"
+DRF_V1_STR: str = "/api/drf/v1"
+WSGI_APP_URL: str = "/web"
+AUTH_USER_MODEL = "accounts.CustomUser"
+
 
 # Application definition
-
-# INSTALLED_APPS = [
-#     'django.contrib.admin',
-#     'django.contrib.auth',
-#     'django.contrib.contenttypes',
-#     'django.contrib.sessions',
-#     'django.contrib.messages',
-#     'django.contrib.staticfiles',
-# ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -49,6 +47,7 @@ MIDDLEWARE = [
 ]
 # Application definition
 DJANGO_APPS = [
+    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -56,19 +55,20 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # "django.contrib.humanize", # Handy template tags
-    "django.contrib.admin",
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
-    # "allauth",
-    # "allauth.account",
-    # "allauth.socialaccount",
-    # "allauth.socialaccount.providers.openid",
-    # "rest_framework",
-    # "rest_framework.authtoken",
     "corsheaders",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    # "allauth.socialaccount.providers.openid",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
+    "dj_rest_auth.registration"
 ]
 
 LOCAL_APPS = [
@@ -137,9 +137,10 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -155,14 +156,76 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
 ########################### MORE SETTINGS ##################################
 SITE_ID = 1
 AUTH_USER_MODEL = 'accounts.User' # (your_app.your_class)
+# AUTH_USER_MODEL = 'accounts.CustomUser'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 ACCOUNT_LOGOUT_ON_GET = True
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication", 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',),
+    # "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_TOKEN_CLASSSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+}
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+# dj_rest_auth
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'access'
+JWT_AUTH_REFRESH_COOKIE = 'refresh'
+REST_AUTH_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+    'USER_DETAILS_SERIALIZER': 'accounts.serializers.CustomUserDetailsSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'accounts.serializers.CustomPasswordResetSerializer',
+}
+OLD_PASSWORD_FIELD_ENABLED = True
+LOGOUT_ON_PASSWORD_CHANGE = False
+
+# All Auth
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+ADAPTER = 'accounts.adapter.MyAccountAdapter'
+ACCOUNT_ADAPTER = 'accounts.adapter.MyAccountAdapter'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = False
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = None
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_EMAIL_CONFIRMATION_HMAC = True
+ACCOUNT_EMAIL_MAX_LENGTH = 255
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # 'optional'
+# ACCOUNT_FORMS = {'reset_password': 'accounts.forms.CustomResetPasswordForm'}
+ACCOUNT_LOGOUT_ON_GET = False
+# ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
+ACCOUNT_PRESERVE_USERNAME_CASING = False
+ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_BLACKLIST = ["admin"]
